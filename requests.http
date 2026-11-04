@@ -1,0 +1,49 @@
+@base = http://localhost:8080
+
+### Deployment information
+GET {{base}}/api/info
+
+### Create a product (change the SKU if running twice)
+POST {{base}}/api/products
+Content-Type: application/json
+
+{"sku":"KEYBOARD-001","name":"Keyboard","price":29.90,"stock":10}
+
+### List products; use the returned ID below
+GET {{base}}/api/products
+
+### Get product (replace 1 with your product ID)
+GET {{base}}/api/products/1
+
+### Replenish stock
+POST {{base}}/api/products/1/stock
+Content-Type: application/json
+
+{"quantity":5}
+
+### Place order
+POST {{base}}/api/orders
+Content-Type: application/json
+
+{"items":[{"productId":1,"quantity":2}]}
+
+### List orders
+GET {{base}}/api/orders
+
+### Cancel order (replace 1 with your order ID)
+POST {{base}}/api/orders/1/cancel
+
+### Insufficient stock: expect HTTP 409
+POST {{base}}/api/orders
+Content-Type: application/json
+
+{"items":[{"productId":1,"quantity":9999}]}
+
+### Readiness
+GET {{base}}/actuator/health/readiness
+
+### Liveness
+GET {{base}}/actuator/health/liveness
+
+### Metrics
+GET {{base}}/actuator/prometheus
